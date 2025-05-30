@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clean Workspace') {
+            steps {
+                deleteDir()
+            }
+        }
+
+        stage('Deploy Container') {
+            steps {
+                sh '''
+                # Stop and remove existing container if it exists
+                sudo docker rm -f myapp || true
+
+                # Run a new container
+                sudo docker run -d -p 8080:80 --name myapp myapp
+                '''
+            }
+        }
+    }
+}
