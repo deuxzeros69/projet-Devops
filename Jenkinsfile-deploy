@@ -11,21 +11,8 @@ pipeline {
         stage('Deploy Container') {
             steps {
                 sh '''
-                # Nettoyer les containers existants qui utilisent le port 8080
-                echo "Vérification des containers utilisant le port 8080..."
-                CONTAINERS=$(sudo docker ps --filter "publish=8080" -q)
-                if [ ! -z "$CONTAINERS" ]; then
-                  echo "Containers trouvés : $CONTAINERS"
-                  sudo docker rm -f $CONTAINERS
-                else
-                  echo "Aucun container sur le port 8080"
-                fi
-
-                # Supprimer aussi myapp s'il existe (par sécurité)
                 sudo docker rm -f myapp || true
-
-                # Déployer un nouveau conteneur
-                sudo docker run -d -p 8080:80 --name myapp myapp
+                sudo docker run -d -p 8081:80 --name myapp myapp
                 '''
             }
         }
